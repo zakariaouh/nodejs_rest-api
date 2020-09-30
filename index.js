@@ -4,12 +4,36 @@ let app = express();
 let router = express.Router();
 let clientRepot = require('./repos/clientsRepo');
 
+router.get('/search', function (req, res, next) {
+    let searchObject = {
+        "id": req.query.id,
+        "lastName": req.query.lastName,
+        "firstName": req.query.firstName
+    }
+    clientRepot.search(searchObject,
+        function (data) {
 
+            res.status(200)
+                .json({
+                    "status": 200,
+                    "statusText": "OK",
+                    "message": "Single client retrieved",
+                    "data": data
+                });
+
+        },
+        function (err) {
+            next(err);
+
+        });
+
+
+});
 router.get('/:id', function (req, res, next) {
     clientRepot.getById(req.params.id,
         function (data) {
 
-            if (data && data.length>0) {
+            if (data && data.length > 0) {
                 res.status(200)
                     .json({
                         "status": 200,
