@@ -7,7 +7,7 @@ let clientRepo = {
                 reject(err)
             } else {
                 let client = JSON.parse(data)
-                    .filter(p => p.id === id);
+                    .filter(p => p.id == id);
                 resolve(client);
             }
         })
@@ -40,8 +40,25 @@ let clientRepo = {
                 resolve(clients);
             }
         });
+    },
+    insert: function (newClient, resolve, reject) {
+        fs.readFile(FILE_NAME, function (err, data) {
+            if (err) {
+                reject(err)
+            } else {
+                let clients = JSON.parse(data);
+                clients.push(newClient)
+                fs.writeFile(FILE_NAME, JSON.stringify(clients), function (err) {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(newClient);
+                    }
+                })
+                resolve(clients);
+            }
+        });
     }
-
 };
 
 module.exports = clientRepo;

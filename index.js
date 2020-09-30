@@ -1,7 +1,11 @@
 let express = require("express")
 let app = express();
 
+
 let router = express.Router();
+//I want to be able to support using json for post methodes
+app.use(express.json());
+
 let clientRepot = require('./repos/clientsRepo');
 
 router.get('/search', function (req, res, next) {
@@ -78,6 +82,21 @@ router.get('/', function (req, res, next) {
 
         });
 
+    router.post('/', function (req, res, next) {
+
+        clientRepot.insert(req.body, function (data) {
+                res.status(201).json({
+                    "status": 201,
+                    "statusText": "Created",
+                    "message": "new client added",
+                    "data": data
+                })
+            },
+            function (err) {
+                next(err);
+            }
+        );
+    });
 
 });
 app.use('/api/', router)
