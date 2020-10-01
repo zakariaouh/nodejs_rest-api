@@ -55,7 +55,7 @@ let clientRepo = {
                         resolve(newClient);
                     }
                 })
-                resolve(clients);
+
             }
         });
     }
